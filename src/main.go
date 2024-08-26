@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/fedi-nabli/GoGen/src/internal/config"
 	"github.com/fedi-nabli/GoGen/src/internal/languages"
 
 	"github.com/fatih/color"
@@ -11,6 +12,8 @@ import (
 )
 
 func main() {
+	config.LoadUserConfig()
+
 	color.Cyan("Please choose your programming stack \U0001F447")
 
 	prompt := promptui.Select{
