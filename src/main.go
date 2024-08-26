@@ -13,6 +13,21 @@ import (
 
 func main() {
 	config.LoadUserConfig()
+	targetOS := config.LoadPackageConfig()
+	targetOSNum := config.WINDOWS
+
+	switch targetOS {
+	case "windows":
+		targetOSNum = config.WINDOWS
+	case "linux":
+		targetOSNum = config.LINUX
+	case "macos":
+		targetOSNum = config.MACOS
+	default:
+		targetOSNum = config.WINDOWS
+	}
+
+	fmt.Println(targetOSNum)
 
 	color.Cyan("Please choose your programming stack \U0001F447")
 
