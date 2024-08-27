@@ -108,9 +108,14 @@ func GenerateProject(osNum int) {
 	case languages.C:
 		commandFile = filepath.Join(scriptsDir, "generate_C_project.txt")
 	case languages.MERN:
+		CheckAndInstallTool(user_config.PackageManager, osNum)
 		commandFile = filepath.Join(scriptsDir, "generate_MERN_project.txt")
 	case languages.MEVN:
+		CheckAndInstallTool(user_config.PackageManager, osNum)
 		commandFile = filepath.Join(scriptsDir, "generate_MEVN_project.txt")
+	case languages.MEAN:
+		CheckAndInstallTool(user_config.PackageManager, osNum)
+		commandFile = filepath.Join(scriptsDir, "generate_MEAN_project.txt")
 	}
 
 	absCommandFile, err := filepath.Abs(commandFile)
