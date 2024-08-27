@@ -1,0 +1,10 @@
+mkdir {{PROJECT_NAME}}
+cd {{PROJECT_NAME}}
+npm init -y
+{{PACKAGE_MANAGER}} install express mongoose dotenv colors bcryptjs jsonwebtoken express-async-handler
+{{PACKAGE_MANAGER}} install --save-dev nodemon
+mkdir backend
+touch backend/index.js
+{{PACKAGE_MANAGER}} create vue@latest frontend --default
+cd frontend
+{{PACKAGE_MANAGER}} install
