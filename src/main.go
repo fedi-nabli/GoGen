@@ -6,6 +6,7 @@ import (
 
 	"github.com/fedi-nabli/GoGen/src/internal/config"
 	"github.com/fedi-nabli/GoGen/src/internal/languages"
+	"github.com/fedi-nabli/GoGen/src/internal/utils"
 
 	"github.com/fatih/color"
 	"github.com/manifoldco/promptui"
@@ -27,7 +28,7 @@ func main() {
 		targetOSNum = config.WINDOWS
 	}
 
-	fmt.Println(targetOSNum)
+	utils.CheckAndInstallTool("npm", targetOSNum)
 
 	color.Cyan("Please choose your programming stack \U0001F447")
 
