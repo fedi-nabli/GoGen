@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/fedi-nabli/GoGen/src/internal/config"
-	"github.com/fedi-nabli/GoGen/src/internal/languages"
 	"github.com/fedi-nabli/GoGen/src/internal/utils"
 
 	"github.com/fatih/color"
@@ -13,7 +11,6 @@ import (
 )
 
 func main() {
-	config.LoadUserConfig()
 	targetOS := config.LoadPackageConfig()
 	targetOSNum := config.WINDOWS
 
@@ -28,13 +25,13 @@ func main() {
 		targetOSNum = config.WINDOWS
 	}
 
-	utils.CheckAndInstallTool("npm", targetOSNum)
+	color.White("Welcome to GoGen, your project generator")
 
-	color.Cyan("Please choose your programming stack \U0001F447")
+	color.Cyan("Please choose your action \U0001F447")
 
 	prompt := promptui.Select{
-		Label: "Programming Stack",
-		Items: languages.LanguagesArray,
+		Label: "Action",
+		Items: []string{"Change your package manager", "Generate project"},
 		Templates: &promptui.SelectTemplates{
 			Label:    "{{ . | cyan }}",
 			Active:   "\U0001F336 {{ . | red | bold }}",
@@ -50,7 +47,9 @@ func main() {
 	}
 
 	switch result {
-	default:
-		fmt.Println("Please choose a supported Language/Stack")
+	case "Change your package manager":
+		config.ChangePackageManager()
+	case "Generate project":
+		utils.GenerateProject(targetOSNum)
 	}
 }

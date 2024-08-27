@@ -63,6 +63,35 @@ func LoadUserConfig() UserConfig {
 	return userConfig
 }
 
+func ChangePackageManager() {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		color.Red("Error getting user home directory: %v\n", err)
+		return
+	}
+
+	configPath := filepath.Join(homeDir, configFileName)
+	userConfig := LoadUserConfig() // Load existing config to update it
+
+	newPackageManager := choosePackageManager()
+	userConfig.PackageManager = newPackageManager
+
+	// Save the updated config
+	data, err := json.Marshal(userConfig)
+	if err != nil {
+		color.Red("Error saving config: %v\n", err)
+		os.Exit(1)
+	}
+
+	err = os.WriteFile(configPath, data, 0644)
+	if err != nil {
+		color.Red("Error writing config file: %v\n", err)
+		os.Exit(1)
+	}
+
+	color.Green("Package manager successfully changed to %s\n", newPackageManager)
+}
+
 func choosePackageManager() string {
 	color.Cyan("Please choose your package manager \U0001F447")
 
