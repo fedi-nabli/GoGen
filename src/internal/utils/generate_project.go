@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/fedi-nabli/GoGen/src/internal/config"
 	"github.com/fedi-nabli/GoGen/src/internal/languages"
 
 	"github.com/fatih/color"
@@ -22,6 +23,7 @@ type ProjectConfig struct {
 
 func GenerateProject(osNum int) {
 	projectConfig := ProjectConfig{}
+	user_config := config.LoadUserConfig()
 
 	// Get project name
 	prompt := promptui.Prompt{
@@ -105,6 +107,10 @@ func GenerateProject(osNum int) {
 	switch projectConfig.Stack {
 	case languages.C:
 		commandFile = filepath.Join(scriptsDir, "generate_C_project.txt")
+	case languages.MERN:
+		commandFile = filepath.Join(scriptsDir, "generate_MERN_project.txt")
+	case languages.MEVN:
+		commandFile = filepath.Join(scriptsDir, "generate_MEVN_project.txt")
 	}
 
 	absCommandFile, err := filepath.Abs(commandFile)
@@ -113,7 +119,8 @@ func GenerateProject(osNum int) {
 	}
 
 	args := map[string]string{
-		"PROJECT_NAME": projectConfig.Name,
+		"PROJECT_NAME":    projectConfig.Name,
+		"PACKAGE_MANAGER": user_config.PackageManager,
 	}
 
 	executeCommandsFromFile(absCommandFile, args)
@@ -198,6 +205,22 @@ func executeCommandsFromFile(filename string, args map[string]string) {
 		parts := strings.Fields(command)
 		if len(parts) == 0 {
 			continue // Skip empty lines
+		}
+
+		// Handle 'cd' command
+		if parts[0] == "cd" {
+			if len(parts) < 2 {
+				color.Red("cd command requires a directory argument")
+				return
+			}
+
+			err := os.Chdir(parts[1])
+			if err != nil {
+				color.Red("failed to change directory to %s: %v", parts[1], err)
+				return
+			}
+			color.White("Changed directory to: %s\n", parts[1])
+			continue
 		}
 
 		cmd := exec.Command(parts[0], parts[1:]...)

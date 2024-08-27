@@ -1,0 +1,4 @@
+mkdir {{PROJECT_NAME}}
+cd {{PROJECT_NAME}}
+mkdir src
+touch src/main.c
